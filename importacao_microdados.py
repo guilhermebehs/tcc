@@ -16,6 +16,10 @@ dicIdAtributo = {"TP_COR_RACA_0":"Nao declarado", "TP_COR_RACA_1":"Branca", "TP_
 				 "Q05_A": "1", "Q05_B": "1-3", "Q05_C": "3-6", "Q05_D": "6-9", "Q05_E": "9-12", "Q05_F": "12-15", "Q05_G": ">15","Q05_H":"0",
 				 }
 
+indexes = ["NU_INSCRICAO", "NU_ANO", "NO_MUNICIPIO_RESIDENCIA", "SG_UF_RESIDENCIA", "NU_IDADE", "TP_SEXO", "TP_COR_RACA"]
+
+
+
 criouTabelaCassandra = False
 
 
@@ -106,23 +110,24 @@ def inserirCassandra (linha, coluna):
 
 def inserirRedis(linha, coluna):
 
- 
+    chave= ''
     for i in range(len(linha)):
     	if linha[i] == '':
     	   linha[i] = 'null' 
     	else :   
     	   linha[i] = resolverIdAtributo(coluna[i], linha[i])
 
-    chave = linha[0]+'-'+linha[1]+'-'+linha[6]+'-'+linha[7]+'-'+linha[9]
+        if coluna[i] in indexes:
+           chave = chave+coluna[i]+':'+linha[i]+"-"
 
     for i in range(len(linha)):  
-        clienteRedis.hset(chave, coluna[i], linha[i])
+        clienteRedis.hset(chave[0:len(chave)-1], coluna[i], linha[i])
 
 
 
 
-clienteMongo = iniciarClienteMongoDB()
-clienteCassandra = iniciarClienteCassandra()
+#clienteMongo = iniciarClienteMongoDB()
+#clienteCassandra = iniciarClienteCassandra()
 clienteRedis = iniciarClienteRedis()
 
 
@@ -138,8 +143,8 @@ def main ():
 	           colunas = linha
 	            
 	        else:
-	           inserirMongoDB(linha, colunas)
-	           inserirCassandra(linha, colunas)
+#	           inserirMongoDB(linha, colunas)
+#	           inserirCassandra(linha, colunas)
 	           inserirRedis(linha, colunas)
 
 	        count= count+1
