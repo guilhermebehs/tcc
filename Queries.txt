@@ -1,0 +1,11 @@
+MongoDB
+//Q1-S
+db.microdados.find({'IN_TREINEIRO':true})
+//Q2-S
+db.microdados.find({'TP_COR_RACA':{$not:{$in:['Branca','Nao declarado']}}})
+//Q3-S
+db.microdados.find({$or:[{'IN_DEFICIENCIA_FISICA':true},{'IN_DEFICIENCIA_MENTAL':true}]})
+//Q4-S
+db.microdados.find({$and:[{'NU_NOTA_REDACAO':{$lt:592.9}},{'NU_ANO':2019}]})
+//Q1-M
+db.microdados.find({$and:[{'NU_ANO':2019},{'NU_NOTA_REDACAO':{$ne:null}}]}).sort({'NU_NOTA_REDACAO':-1}).limit(5)

@@ -13,7 +13,7 @@ dicIdAtributo = {"TP_COR_RACA_0":"Nao declarado", "TP_COR_RACA_1":"Branca", "TP_
 
 indexes = ["NU_ANO","SG_UF_RESIDENCIA", "NU_IDADE", "TP_SEXO", "TP_COR_RACA", "TP_PRESENCA_CN",
            "TP_PRESENCA_CH", "TP_PRESENCA_LC", "TP_PRESENCA_MT", "TX_RESPOSTAS_LC","TP_LINGUA","TX_GABARITO_LC",
-           "IN_DEFICIENCIA_FISICA", "IN_DEFICIENCIA_MENTAL", "NU_NOTA_REDACAO", "NU_NOTA_MT"]
+           "IN_DEFICIENCIA_FISICA", "IN_DEFICIENCIA_MENTAL", "NU_NOTA_REDACAO", "NU_NOTA_MT","IN_TREINEIRO"]
 
 
 
@@ -61,7 +61,15 @@ def inserirMongoDB (linha, coluna):
         if linha[i].strip() == '':
             documento[coluna[i]] = None
         else:
-            documento[coluna[i]] = resolverIdAtributo(coluna[i],linha[i].decode('latin-1').strip())    
+            documento[coluna[i]] = resolverIdAtributo(coluna[i],linha[i].decode('latin-1').strip())  
+            if 'IN_' in coluna[i]:
+                   documento[coluna[i]] = bool(int(documento[coluna[i]]))
+            if 'NU_' in coluna[i]:
+            	if documento[coluna[i]].isdigit():
+                   documento[coluna[i]] = int(documento[coluna[i]])
+                else:
+                   documento[coluna[i]] = float(documento[coluna[i]])
+
 
     clienteMongo.insert_one(documento)
 
@@ -190,7 +198,7 @@ def main ():
 #	           inserirRedis(linha, colunas)
 
 	        count= count+1
-	        if count > 50 :
+	        if count > 100 :
 	           break
 
     with open('MICRODADOS_ENEM_2018.csv') as csv_file:
@@ -206,7 +214,7 @@ def main ():
 #	           inserirRedis(linha, colunas)
 
 	        count= count+1
-	        if count > 50 :
+	        if count > 100 :
 	           break
 
     with open('MICRODADOS_ENEM_2019.csv') as csv_file:
@@ -222,7 +230,7 @@ def main ():
 #	           inserirRedis(linha, colunas)
 
 	        count= count+1
-	        if count > 50 :
+	        if count > 100 :
 	           break
     
 
