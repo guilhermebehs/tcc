@@ -2,10 +2,16 @@ MongoDB
 //Q1-S
 db.microdados.find({'IN_TREINEIRO':true})
 //Q2-S
-db.microdados.find({'TP_COR_RACA':{$not:{$in:['Branca','Nao declarado']}}})
+db.microdados.find({'TP_COR_RACA':{$nin:['Branca','Nao declarado']}})
 //Q3-S
 db.microdados.find({$or:[{'IN_DEFICIENCIA_FISICA':true},{'IN_DEFICIENCIA_MENTAL':true}]})
 //Q4-S
 db.microdados.find({$and:[{'NU_NOTA_REDACAO':{$lt:592.9}},{'NU_ANO':2019}]})
 //Q1-M
 db.microdados.find({$and:[{'NU_ANO':2019},{'NU_NOTA_REDACAO':{$ne:null}}]}).sort({'NU_NOTA_REDACAO':-1}).limit(5)
+//Q2-M
+db.microdados.find({'TP_COR_RACA':{$not:{$in:['Branca','Nao declarado']}}}).sort({'NU_NOTA_REDACAO':-1}).limit(5)
+//Q3-M
+db.microdados.find({'NU_IDADE':{$gte:15,$lte:18}}).sort({'NU_NOTA_REDACAO':-1}).limit(5)
+//Q4-M
+db.microdados.find({$and:[{'TX_RESPOSTAS_LC':{$ne:null}},{$where:'this.TX_RESPOSTAS_LC.substring(0,5) == this.TX_GABARITO_LC.substring(0,5)'}]})
