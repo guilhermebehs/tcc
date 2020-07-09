@@ -85,6 +85,8 @@ def inserirCassandra (linha, coluna):
             queryCriacaoTabela = queryCriacaoTabela +" "+ colunasParaCassandra[i]
             if "NU_" in  colunasParaCassandra[i]:
                queryCriacaoTabela = queryCriacaoTabela + " DECIMAL,"
+            elif 'IN_' in colunasParaCassandra[i]:
+                queryCriacaoTabela = queryCriacaoTabela + " BOOLEAN,"
             else :
                queryCriacaoTabela = queryCriacaoTabela + " VARCHAR,"
 
@@ -107,14 +109,16 @@ def inserirCassandra (linha, coluna):
     queryValores = " VALUES("
     for i in range(len(linha)):
         queryCampos = queryCampos + coluna[i]+","
-        print(linha[i])
 
         if linha[i].strip() == '':
             queryValores = queryValores +'null'+","
         elif "NU_" in coluna[i]:
             queryValores = queryValores +linha[i].strip()+","
+        elif 'IN_' in colunasParaCassandra[i]:
+            queryValores = queryValores + string(bool(int(linha[i])))
         else:
-          	queryValores = queryValores +"'"+linha[i].decode('latin-1').strip()+"',"
+            valorFormatado = linha[i].decode('latin-1').strip().replace("'","")
+            queryValores = queryValores +"'"+valorFormatado+"',"
 
     queryValores = queryValores+");"
     queryCampos =queryCampos+")"
@@ -180,8 +184,8 @@ def main ():
     global clienteMongo
     global clienteCassandra
     global clienteRedis
-    clienteMongo = iniciarClienteMongoDB()
-    #clienteCassandra = iniciarClienteCassandra() 
+    #clienteMongo = iniciarClienteMongoDB()
+    clienteCassandra = iniciarClienteCassandra() 
     #clienteRedis = iniciarClienteRedis()
 
 
@@ -193,8 +197,8 @@ def main ():
 	           colunas = linha
 	            
 	        else:
-	           inserirMongoDB(linha, colunas)
-#	           inserirCassandra(linha, colunas)
+#	           inserirMongoDB(linha, colunas)
+	           inserirCassandra(linha, colunas)
 #	           inserirRedis(linha, colunas)
 
 	        count= count+1
@@ -209,8 +213,8 @@ def main ():
 	           colunas = linha
 	            
 	        else:
-	           inserirMongoDB(linha, colunas)
-#	           inserirCassandra(linha, colunas)
+#	           inserirMongoDB(linha, colunas)
+	           inserirCassandra(linha, colunas)
 #	           inserirRedis(linha, colunas)
 
 	        count= count+1
@@ -225,8 +229,8 @@ def main ():
 	           colunas = linha
 	            
 	        else:
-	           inserirMongoDB(linha, colunas)
-#	           inserirCassandra(linha, colunas)
+#	           inserirMongoDB(linha, colunas)
+	           inserirCassandra(linha, colunas)
 #	           inserirRedis(linha, colunas)
 
 	        count= count+1

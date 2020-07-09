@@ -16,7 +16,7 @@
 
 * Complexa
 
-- média de redação por raças
-- média de matemática por sexo
-- Top 5 estados com mais evasão em todas as provas objetivas 
-- Top 5 média em matemática por estado
+- média de redação por raça em um determinado ano ordenado da maior a menor média
+- média de matemática por sexo em um determinado ano ordenado da maior a menor média
+- Top 5 estados com mais evasão em todas as provas objetivas em todos os anos da maior a menor contagem
+- Top 5 média em matemática por estado em todos os anos da maior a menor contagem
