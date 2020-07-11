@@ -23,31 +23,39 @@ def retornarChaves(expressaoRegular):
 def mergeResultados(resultado, dictsParaMerge):
     for dic in dictsParaMerge:
         resultado.update(dic)
-
     return resultado
 
+def Q1S():
+   return retornarChaves('*')
 
+def Q2S():
+    minorias = ['Preta', 'Indigena', 'Amarela', 'Parda']
 
-def retornarPorRaca(racas):
     resultados=[]
-    for raca in racas:
-        resultados.append(retornarChaves("*-"+raca))
+    for minoria in minorias:
+        retorno = retornarChaves("*TP_COR_RACA:"+minoria+"*")
+        if len(retorno) > 0:
+            resultados.append(retorno)
 
     if len(resultados) > 0:
-    	return mergeResultados(resultados[0], resultados)
+      return mergeResultados(resultados[0], resultados)
     else:
         return {}
 
-#def retornarPorIntervaloAno():
 
-#def retornarPorIntervaloAnoESexo():
+def Q3S():
+    return retornarChaves("*IN_DEFICIENCIA_*:1*-TP_PRESENCA_CN*")
+
+def Q4S():
+    return retornarChaves("*TP_NACIONALIDADE:Brasileiro*")
 
 clienteRedis = iniciarClienteRedis()
 
 def main ():
-    resultados = retornarPorRaca(["Parda", "Preta"])
-    for resultado in resultados:
-        print(resultado)
+    resultados = Q4S()
+  #  for key in resultados:
+  #      print(key)
+    print('\n\n'+str(len(resultados))+' resultado(s)')
 
 
 

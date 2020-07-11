@@ -1,22 +1,23 @@
 * Simples 
 
-- Retornar inscritos treineiros
+- Retornar inscritos
 - Retornar inscritos pertencentes a minorias raciais (busca por inscritos que não se declararam brancos ou  não-declarados) 
-- Retornar inscritos que indicaram ter dificiência física ou mental 
-- Retornar inscritos com notas da redação abaixo da média daquele ano (média sera informada na query, não calculada) 
+- Retornar inscritos que indicaram ter dificiência física ou mental
+- Retornar inscritos com nacionalidade brasileira
 
 
 * Média
 
 - Top 5 notas de redação em um determinado ano 
-- Top 5 notas de redação de inscritos pertencentes de minorias raciais 
+- Top 5 notas de redação de inscritos pertencentes de minorias raciais em um determinado ano
 - Top 5 notas de redação de inscritos entre 15 e 18 anos (intervalo padrão em que um inscrito normalmente está no ensino médio)   
 - Contagem de inscritos que gabaritaram a prova de lingua estrangeira 
+
 
 
 * Complexa
 
 - média de redação por raça em um determinado ano ordenado da maior a menor média
-- média de matemática por sexo em um determinado ano ordenado da maior a menor média
+- média de mátemática por ano  onde o nº de pessoas morando com o inscrito está dentro de uma faixa  
 - Top 5 estados com mais evasão em todas as provas objetivas em todos os anos da maior a menor contagem
-- Top 5 média em matemática por estado em todos os anos da maior a menor contagem
+- Retornar quantidade de inscritos e média de redação de indígenas localizados na região sul(RS, SC, PR) por ano 
