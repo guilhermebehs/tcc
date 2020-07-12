@@ -21,7 +21,7 @@ db.microdados.find({$and:[{'TX_RESPOSTAS_LC':{$ne:null}},{$where:'this.TX_RESPOS
 
 //Q1-C
 db.microdados.aggregate([
-                         {$match : { 'NU_ANO' : 2018, {'NU_NOTA_REDACAO':{$ne:null} } },
+                         {$match : { 'NU_ANO' : 2018, 'NU_NOTA_REDACAO':{$ne:null} } },
                          {
                          $group:{
                                  _id:{'raça':'$TP_COR_RACA'}, 
