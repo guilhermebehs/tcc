@@ -19,7 +19,7 @@ converterInt = {"Q005":1}
 
 indexes = ["NU_INSCRICAO","NU_ANO","SG_UF_RESIDENCIA", "NU_IDADE", "TP_NACIONALIDADE", "TP_PRESENCA_CN",
            "TP_PRESENCA_CH", "TP_PRESENCA_LC", "TP_PRESENCA_MT", "TX_RESPOSTAS_LC","TP_LINGUA","TX_GABARITO_LC",
-           "IN_DEFICIENCIA_FISICA", "IN_DEFICIENCIA_MENTAL", "NU_NOTA_REDACAO", "NU_NOTA_MT", "TP_COR_RACA"]
+           "IN_DEFICIENCIA_FISICA", "IN_DEFICIENCIA_MENTAL", "NU_NOTA_REDACAO", "NU_NOTA_MT", "TP_COR_RACA", "Q005"]
 
 
 
@@ -195,13 +195,13 @@ def main ():
 
     global colunasParaCassandra
 
-    with open('MICRODADOS_ENEM_2017.csv') as csv_file:
+    with open('/home/guilhermebehs/Downloads/MICRODADOS_ENEM_2017.csv') as csv_file:
 	    data = csv.reader(csv_file, delimiter=";")
 	    for linha in data:
 	        colunasParaCassandra = linha
 	        break
 
-    with open('MICRODADOS_ENEM_2018.csv') as csv_file:
+    with open('/home/guilhermebehs/Downloads/MICRODADOS_ENEM_2018.csv') as csv_file:
 	    data = csv.reader(csv_file, delimiter=";")
 	    for linha in data:
 	        colunas2018 = linha
@@ -210,7 +210,7 @@ def main ():
 	               colunasParaCassandra.append(coluna)  
 	        break
 
-    with open('MICRODADOS_ENEM_2019.csv') as csv_file:
+    with open('/home/guilhermebehs/Downloads/MICRODADOS_ENEM_2019.csv') as csv_file:
 	    data = csv.reader(csv_file, delimiter=";")
 	    for linha in data:
 	        colunas2019 = linha
@@ -224,12 +224,12 @@ def main ():
     global clienteMongo
     global clienteCassandra
     global clienteRedis
-    #clienteMongo = iniciarClienteMongoDB()
+    clienteMongo = iniciarClienteMongoDB()
     #clienteCassandra = iniciarClienteCassandra() 
     clienteRedis = iniciarClienteRedis()
 
 
-    with open('MICRODADOS_ENEM_2017.csv') as csv_file:
+    with open('/home/guilhermebehs/Downloads/MICRODADOS_ENEM_2017.csv') as csv_file:
 	    data = csv.reader(csv_file, delimiter=";")
 	    count = 0
 	    for linha in data:
@@ -237,7 +237,7 @@ def main ():
 	           colunas = linha
 	            
 	        else:
-#	           inserirMongoDB(linha, colunas)
+	           inserirMongoDB(linha, colunas)
 #	           inserirCassandra(linha, colunas)
 	           inserirRedis(linha, colunas)
 
@@ -245,7 +245,7 @@ def main ():
 	        if count > 500 :
 	           break
 
-    with open('MICRODADOS_ENEM_2018.csv') as csv_file:
+    with open('/home/guilhermebehs/Downloads/MICRODADOS_ENEM_2018.csv') as csv_file:
 	    data = csv.reader(csv_file, delimiter=";")
 	    count = 0
 	    for linha in data:
@@ -253,7 +253,7 @@ def main ():
 	           colunas = linha
 	            
 	        else:
-#	           inserirMongoDB(linha, colunas)
+	           inserirMongoDB(linha, colunas)
 #	           inserirCassandra(linha, colunas)
 	           inserirRedis(linha, colunas)
 
@@ -261,7 +261,7 @@ def main ():
 	        if count > 500 :
 	           break
 
-    with open('MICRODADOS_ENEM_2019.csv') as csv_file:
+    with open('/home/guilhermebehs/Downloads/MICRODADOS_ENEM_2019.csv') as csv_file:
 	    data = csv.reader(csv_file, delimiter=";")
 	    count = 0
 	    for linha in data:
@@ -269,7 +269,7 @@ def main ():
 	           colunas = linha
 	            
 	        else:
-#	           inserirMongoDB(linha, colunas)
+	           inserirMongoDB(linha, colunas)
 #	           inserirCassandra(linha, colunas)
 	           inserirRedis(linha, colunas)
 

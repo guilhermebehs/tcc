@@ -55,6 +55,43 @@ def mediaRedacaoAgrupadaPorRaca(resultados):
          medias[agrupamento] = media
           
     return medias
+
+
+def mediaMatematicaAgrupadaPorAno(resultados):
+    agrupamentos ={}
+    medias = {}
+    for resultado in resultados:
+        if resultados[resultado]['NU_NOTA_MT'] != 'null':
+           ano = resultados[resultado]['NU_ANO']
+           nota = resultados[resultado]['NU_NOTA_MT']
+           if ano in agrupamentos: 
+              agrupamentos[ano].append(float(nota))
+           else:
+              agrupamentos[ano] = [float(nota)]
+    
+    
+    for agrupamento in agrupamentos:
+         media = sum(agrupamentos[agrupamento]) / len(agrupamentos[agrupamento])
+         medias[agrupamento] = media
+          
+    return medias
+
+def contagemEvasaoGeralAgrupadaPorUf(resultados):
+    agrupamentos ={}
+    medias = {}
+    for resultado in resultados:
+         uf = resultados[resultado]['SG_UF_RESIDENCIA']
+         if uf in agrupamentos: 
+            agrupamentos[uf].append(1)
+         else:
+            agrupamentos[uf] = [1]
+    
+    
+    for agrupamento in agrupamentos:
+         soma = sum(agrupamentos[agrupamento]) 
+         medias[agrupamento] = soma
+          
+    return medias
         
 
 def mergeResultados(resultado, dictsParaMerge):
@@ -113,12 +150,26 @@ def Q1C():
      agrupamentoOrdenado = ordenarAgrupamento(agrupamento)
      return agrupamentoOrdenado
 
+def Q2C():
+     resultados = retornarChaves("*Q005:[5-9]*",0)
+     agrupamento = mediaMatematicaAgrupadaPorAno(resultados)
+     agrupamentoOrdenado = ordenarAgrupamento(agrupamento)
+     return agrupamentoOrdenado
+
+
+def Q3C():
+    resultados = retornarChaves("*0-TP_PRESENCA_CN:0*TP_PRESENCA_CH:0*TP_PRESENCA_LC:0*TP_PRESENCA_MT:0*",0)
+    agrupamento = contagemEvasaoGeralAgrupadaPorUf(resultados)
+    agrupamentoOrdenado = ordenarAgrupamento(agrupamento)
+    return agrupamentoOrdenado[0:5]
+
+
 clienteRedis = iniciarClienteRedis()
 
 def main ():
 
   #
-    resultados = Q1C()
+    resultados = Q3C()
     print(resultados)
   #  for key in resultados:
   #      print(key)

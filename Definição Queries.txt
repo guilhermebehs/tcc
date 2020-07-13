@@ -18,6 +18,6 @@
 * Complexa
 
 - média de redação por raça em um determinado ano ordenado da maior a menor média
-- média de mátemática por ano  onde o nº de pessoas morando com o inscrito está dentro de uma faixa  
+- média de mátemática por ano  onde o nº de pessoas morando com o inscrito está entre 5 e 9 
 - Top 5 estados com mais evasão em todas as provas objetivas em todos os anos da maior a menor contagem
 - Retornar quantidade de inscritos e média de redação de indígenas localizados na região sul(RS, SC, PR) por ano 

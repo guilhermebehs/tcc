@@ -33,7 +33,7 @@ db.microdados.aggregate([
 
 //Q2-C
 db.microdados.aggregate([
-                         {$match : { 'Q005':{$gte:5,$lte:10} }},
+                         {$match : { 'Q005':{$gte:5,$lte:9} }},
                          {
                          $group:{
                                  _id:{'ano':'$NU_ANO'}, 
