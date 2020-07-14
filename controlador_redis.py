@@ -78,7 +78,7 @@ def mediaMatematicaAgrupadaPorAno(resultados):
 
 def contagemEvasaoGeralAgrupadaPorUf(resultados):
     agrupamentos ={}
-    medias = {}
+    contagens = {}
     for resultado in resultados:
          uf = resultados[resultado]['SG_UF_RESIDENCIA']
          if uf in agrupamentos: 
@@ -89,10 +89,31 @@ def contagemEvasaoGeralAgrupadaPorUf(resultados):
     
     for agrupamento in agrupamentos:
          soma = sum(agrupamentos[agrupamento]) 
-         medias[agrupamento] = soma
+         contagens[agrupamento] = soma
           
-    return medias
+    return contagens
         
+def contagemMediaRedacaoAgrupadaPorAno(resultados):
+    agrupamentos ={}
+    contagemMedias = {}
+
+    estados = ['RS','PR','SC']
+    for resultado in resultados:
+    	if resultados[resultado]['NU_NOTA_REDACAO'] != 'null' and resultados[resultado]['SG_UF_RESIDENCIA'] in estados:
+         ano = resultados[resultado]['NU_ANO']
+         nota = resultados[resultado]['NU_NOTA_REDACAO']
+         if ano in agrupamentos: 
+            agrupamentos[ano].append(float(nota))
+         else:
+            agrupamentos[ano] = [float(nota)]
+    
+    
+    for agrupamento in agrupamentos:
+         contagem = len(agrupamentos[agrupamento]) 
+         media = sum(agrupamentos[agrupamento])/contagem
+         contagemMedias[agrupamento] = (contagem, media)
+          
+    return contagemMedias
 
 def mergeResultados(resultado, dictsParaMerge):
     for dic in dictsParaMerge:
@@ -163,13 +184,20 @@ def Q3C():
     agrupamentoOrdenado = ordenarAgrupamento(agrupamento)
     return agrupamentoOrdenado[0:5]
 
+def Q4C():
+    resultadosOrdenados = {}
+    resultados = retornarChaves("*TP_COR_RACA:Indigena*",0)
+    agrupamento = contagemMediaRedacaoAgrupadaPorAno(resultados)
+
+    resultadosOrdenados =sorted(agrupamento.items(), key=lambda x:x[1][1], reverse=True)
+    return resultadosOrdenados
 
 clienteRedis = iniciarClienteRedis()
 
 def main ():
 
   #
-    resultados = Q3C()
+    resultados = Q4C()
     print(resultados)
   #  for key in resultados:
   #      print(key)
