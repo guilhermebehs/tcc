@@ -59,13 +59,25 @@ db.microdados.aggregate([
 //Q4-C
 
 
-db.microdados.aggregate([             {$match:{$and:[{'TP_COR_RACA':'Indigena'},{'SG_UF_RESIDENCIA':{$in:['RS','PR','SC']}},{'NU_NOTA_REDACAO':{$ne:null}}]}},            
- {$group:{                     
-         _id:{'raça':'$NU_ANO'},                      
-         media:{$avg:'$NU_NOTA_REDACAO'},                     
-         contagem:{$sum:1}}},     
+db.microdados.find({}).forEach(function(inscrito){
 
-         {$sort:{media:-1}}  ]);
+    if(inscrito.NU_NOTA_REDACAO != null){
+        ano = inscrito.NU_ANO
+        db.microdados.aggregate([
+                                 {$match : {'NU_ANO':ano,'NU_NOTA_REDACAO':{$ne:null} } },
+                                 {
+                                 $group:{
+                                         _id: null, 
+                                         media:{$avg:'$NU_NOTA_REDACAO'}
+                                         }}
+                                 
+                                         ]).forEach(function(agr){
+                                             if(inscrito.NU_NOTA_REDACAO < agr.media)
+                                                   printjson(inscrito)
+                                         })
+          }
+    
+})
 
 
 
