@@ -93,13 +93,12 @@ def contagemEvasaoGeralAgrupadaPorUf(resultados):
           
     return contagens
         
-def contagemMediaRedacaoAgrupadaPorAno(resultados):
+def mediaRedacaoAgrupadaPorAno(resultados):
     agrupamentos ={}
     contagemMedias = {}
 
-    estados = ['RS','PR','SC']
     for resultado in resultados:
-    	if resultados[resultado]['NU_NOTA_REDACAO'] != 'null' and resultados[resultado]['SG_UF_RESIDENCIA'] in estados:
+    	if resultados[resultado]['NU_NOTA_REDACAO'] != 'null':
          ano = resultados[resultado]['NU_ANO']
          nota = resultados[resultado]['NU_NOTA_REDACAO']
          if ano in agrupamentos: 
@@ -109,9 +108,8 @@ def contagemMediaRedacaoAgrupadaPorAno(resultados):
     
     
     for agrupamento in agrupamentos:
-         contagem = len(agrupamentos[agrupamento]) 
-         media = sum(agrupamentos[agrupamento])/contagem
-         contagemMedias[agrupamento] = (contagem, media)
+         media = sum(agrupamentos[agrupamento])/len(agrupamentos[agrupamento])
+         contagemMedias[agrupamento] =  media
           
     return contagemMedias
 
@@ -185,12 +183,18 @@ def Q3C():
     return agrupamentoOrdenado[0:5]
 
 def Q4C():
-    resultadosOrdenados = {}
-    resultados = retornarChaves("*TP_COR_RACA:Indigena*",0)
-    agrupamento = contagemMediaRedacaoAgrupadaPorAno(resultados)
+    inscritosAbaixoMedia = []
+    resultados = retornarChaves("**",0)
+    agrupamento = mediaRedacaoAgrupadaPorAno(resultados)
+    for resultado in resultados:
+    	if resultados[resultado]['NU_NOTA_REDACAO'] != 'null':
+    		ano = resultados[resultado]['NU_ANO']
+    		nota = float(resultados[resultado]['NU_NOTA_REDACAO'])
+    		mediaAno = agrupamento[ano]
+    		if nota < mediaAno:
+    		   inscritosAbaixoMedia.append(resultados[resultado])
 
-    resultadosOrdenados =sorted(agrupamento.items(), key=lambda x:x[1][1], reverse=True)
-    return resultadosOrdenados
+    return inscritosAbaixoMedia
 
 clienteRedis = iniciarClienteRedis()
 

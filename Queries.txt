@@ -63,6 +63,7 @@ db.microdados.find({}).forEach(function(inscrito){
 
     if(inscrito.NU_NOTA_REDACAO != null){
         ano = inscrito.NU_ANO
+        contagem = 0
         db.microdados.aggregate([
                                  {$match : {'NU_ANO':ano,'NU_NOTA_REDACAO':{$ne:null} } },
                                  {
