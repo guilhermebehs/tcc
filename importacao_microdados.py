@@ -6,7 +6,6 @@ import csv
 import unicodedata
 import pymongo
 import redis
-from cassandra.cluster import Cluster 
 
 dicIdAtributo = {"TP_COR_RACA_0":"Nao declarado", "TP_COR_RACA_1":"Branca", "TP_COR_RACA_2":"Preta", 
 				 "TP_COR_RACA_3":"Parda", "TP_COR_RACA_4":"Amarela", "TP_COR_RACA_5":"Indigena",
@@ -23,11 +22,6 @@ indexes = ["NU_INSCRICAO","NU_ANO","SG_UF_RESIDENCIA", "NU_IDADE", "TP_NACIONALI
 
 
 
-criouTabelaCassandra = False
-
-colunasParaCassandra= []
-
-idCassandra = 0;
 
 
 def resolverIdAtributo(coluna, valor):
@@ -48,13 +42,7 @@ def iniciarClienteMongoDB ():
         colecaoMicrodados.create_index(index)
     return colecaoMicrodados
 
-def iniciarClienteCassandra():
-    clstr=Cluster()
-    session=clstr.connect()
-    session.execute("DROP keyspace if exists tcc;")
-    session.execute("create keyspace tcc with replication={'class': 'SimpleStrategy', 'replication_factor' : 3};")
-    session=clstr.connect("tcc")
-    return session
+
 
 def iniciarClienteRedis():
 	r = redis.Redis()
@@ -103,66 +91,7 @@ def inserirMongoDB (linha, coluna):
     clienteMongo.insert_one(documento)
 
 
-def inserirCassandra (linha, coluna):
 
-    global idCassandra
-    global criouTabelaCassandra
-    if criouTabelaCassandra == False :
-        clienteCassandra.execute("DROP table if exists microdados;")
-        queryCriacaoTabela = "create table microdados ("
-        queryCriacaoTabela = queryCriacaoTabela + " id BIGINT, "
-        for i in range(len(colunasParaCassandra)):
-            queryCriacaoTabela = queryCriacaoTabela +" "+ colunasParaCassandra[i]
-            if "NU_" in  colunasParaCassandra[i]:
-               queryCriacaoTabela = queryCriacaoTabela + " DECIMAL,"
-            elif 'IN_' in colunasParaCassandra[i]:
-                queryCriacaoTabela = queryCriacaoTabela + " BOOLEAN,"
-            elif colunasParaCassandra[i] in converterInt:
-                queryCriacaoTabela = queryCriacaoTabela + " INT,"
-            else :
-               queryCriacaoTabela = queryCriacaoTabela + " VARCHAR,"
-
-        queryCriacaoTabela = queryCriacaoTabela+ "PRIMARY KEY ((id),TP_COR_RACA,NU_ANO ,TP_NACIONALIDADE));"
-        
-        criouTabelaCassandra = True
-
-        clienteCassandra.execute(queryCriacaoTabela)
-
-         
-        for index in indexes:
-            if index != 'NU_ANO' and index != 'TP_NACIONALIDADE':
-                queryCriacaoIndexes = " CREATE INDEX ON tcc.microdados ("+index+"); "
-                clienteCassandra.execute(queryCriacaoIndexes)
-        
-            
-    queryInsercao = " INSERT INTO microdados "
-    queryCampos = " (id,"
-    idCassandra =idCassandra+1
-    queryValores = " VALUES("+str(idCassandra)+","
-     
-
-    for i in range(len(linha)):
-        queryCampos = queryCampos + coluna[i]+","
-
-        if linha[i].strip() == '':
-            queryValores = queryValores +'null'+","
-        elif "NU_" in coluna[i]  or coluna[i] in converterInt:
-            queryValores = queryValores +linha[i].strip()+"," 
-        elif 'IN_' in coluna[i]:
-            queryValores = queryValores + str(bool(int(linha[i])))+','
-        else:
-            valorFormatado = linha[i].decode('latin-1').strip().replace("'","")
-            valorFormatado = valorFormatado.encode('utf8')
-            queryValores = queryValores +"'"+resolverIdAtributo(coluna[i],valorFormatado)+"',"
-
-    queryValores = queryValores+");"
-    queryCampos =queryCampos+")"
-    queryValores = queryValores.replace(",)", ")")
-    queryCampos = queryCampos.replace(",)", ")")
-    queryInsercao = queryInsercao + queryCampos + queryValores
-    clienteCassandra.execute(queryInsercao)
-	
-	
 
 def inserirRedis(linha, coluna):
 
@@ -193,39 +122,11 @@ def inserirRedis(linha, coluna):
 
 def main ():
 
-    global colunasParaCassandra
-
-    with open('/home/guilhermebehs/Downloads/MICRODADOS_ENEM_2017.csv') as csv_file:
-	    data = csv.reader(csv_file, delimiter=";")
-	    for linha in data:
-	        colunasParaCassandra = linha
-	        break
-
-    with open('/home/guilhermebehs/Downloads/MICRODADOS_ENEM_2018.csv') as csv_file:
-	    data = csv.reader(csv_file, delimiter=";")
-	    for linha in data:
-	        colunas2018 = linha
-	        for coluna in colunas2018:
-	            if coluna not in colunasParaCassandra:
-	               colunasParaCassandra.append(coluna)  
-	        break
-
-    with open('/home/guilhermebehs/Downloads/MICRODADOS_ENEM_2019.csv') as csv_file:
-	    data = csv.reader(csv_file, delimiter=";")
-	    for linha in data:
-	        colunas2019 = linha
-	        for coluna in colunas2019:
-	            if coluna not in colunasParaCassandra:
-	               colunasParaCassandra.append(coluna)  
-	        break
-
-
+    
 
     global clienteMongo
-    global clienteCassandra
     global clienteRedis
     clienteMongo = iniciarClienteMongoDB()
-    #clienteCassandra = iniciarClienteCassandra() 
     clienteRedis = iniciarClienteRedis()
 
 
@@ -238,7 +139,6 @@ def main ():
 	            
 	        else:
 	           inserirMongoDB(linha, colunas)
-#	           inserirCassandra(linha, colunas)
 	           inserirRedis(linha, colunas)
 
 	        count= count+1
@@ -254,7 +154,6 @@ def main ():
 	            
 	        else:
 	           inserirMongoDB(linha, colunas)
-#	           inserirCassandra(linha, colunas)
 	           inserirRedis(linha, colunas)
 
 	        count= count+1
@@ -270,7 +169,6 @@ def main ():
 	            
 	        else:
 	           inserirMongoDB(linha, colunas)
-#	           inserirCassandra(linha, colunas)
 	           inserirRedis(linha, colunas)
 
 	        count= count+1
