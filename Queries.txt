@@ -10,11 +10,11 @@ db.microdados.find({"TP_NACIONALIDADE":/Brasileiro/});
 
 
 //Q1-M
-db.microdados.find({$and:[{'NU_ANO':2019},{'NU_NOTA_REDACAO':{$ne:null}}]}).sort({'NU_NOTA_REDACAO':-1}).limit(5)
+db.microdados.find({$and:[{'NU_ANO':2019},{'NU_NOTA_REDACAO':{$ne:null}}]},{'NU_NOTA_REDACAO':1}).sort({'NU_NOTA_REDACAO':-1}).limit(5)
 //Q2-M
-db.microdados.find({'TP_COR_RACA':{$not:{$in:['Branca','Nao declarado']}}}).sort({'NU_NOTA_REDACAO':-1}).limit(5)
+db.microdados.find({'TP_COR_RACA':{$not:{$in:['Branca','Nao declarado']}}}, ,{'NU_NOTA_REDACAO':1}).sort({'NU_NOTA_REDACAO':-1}).limit(5)
 //Q3-M
-db.microdados.find({'NU_IDADE':{$gte:15,$lte:18}}).sort({'NU_NOTA_REDACAO':-1}).limit(5)
+db.microdados.find({'NU_IDADE':{$gte:15,$lte:18}},{'NU_NOTA_REDACAO':1}).sort({'NU_NOTA_REDACAO':-1}).limit(5)
 //Q4-M
 db.microdados.find({$and:[{'TX_RESPOSTAS_LC':{$ne:null}},{$where:'this.TX_RESPOSTAS_LC.substring(0,5) == this.TX_GABARITO_LC.substring(0,5)'}]}).count()
 

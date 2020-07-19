@@ -53,11 +53,8 @@ def inserirCassandra (linha, coluna):
     if criouTabelaCassandra == False :
         clienteCassandra.execute("DROP table if exists microdados;")
         clienteCassandra.execute("DROP table if exists microdados_por_cor_raca;")
-        clienteCassandra.execute("DROP table if exists microdados_por_nacionalidade;")
         
-        queryCriacaoTabela = "CREATE TABLE microdados_por_cor_raca (NU_INSCRICAO BIGINT,TP_COR_RACA VARCHAR, NU_ANO INT, PRIMARY KEY(NU_INSCRICAO,TP_COR_RACA, NU_ANO));"  
-        clienteCassandra.execute(queryCriacaoTabela)
-        queryCriacaoTabela = "CREATE TABLE microdados_por_nacionalidade (NU_INSCRICAO BIGINT,TP_NACIONALIDADE VARCHAR, NU_ANO INT, PRIMARY KEY(NU_INSCRICAO,TP_NACIONALIDADE, NU_ANO));"  
+        queryCriacaoTabela = "CREATE TABLE microdados_por_cor_raca (id BIGINT,TP_COR_RACA VARCHAR, NU_ANO INT, PRIMARY KEY(id,TP_COR_RACA, NU_ANO));"  
         clienteCassandra.execute(queryCriacaoTabela)
 
 
@@ -74,7 +71,7 @@ def inserirCassandra (linha, coluna):
             else :
                queryCriacaoTabela = queryCriacaoTabela + " VARCHAR,"
 
-        queryCriacaoTabela = queryCriacaoTabela+ "PRIMARY KEY ((id),NU_INSCRICAO,NU_ANO, NU_NOTA_REDACAO,NU_NOTA_MT));"
+        queryCriacaoTabela = queryCriacaoTabela+ "PRIMARY KEY ((id),NU_NOTA_REDACAO,NU_ANO,NU_NOTA_MT));"
         
         criouTabelaCassandra = True
 
@@ -110,20 +107,14 @@ def inserirCassandra (linha, coluna):
             queryValores = queryValores +"'"+resolverIdAtributo(coluna[i],valorFormatado)+"',"
 
      
-        i = coluna.index("NU_INSCRICAO")
-        inscricao = linha[i]
+       
         i = coluna.index("NU_ANO")
         ano = linha[i]
         i = coluna.index("TP_COR_RACA")
         corRaca = resolverIdAtributo(coluna[i],linha[i])
-        i = coluna.index("TP_NACIONALIDADE")
-        nacionalidade = resolverIdAtributo(coluna[i],linha[i])
 
-        queryTabelaFilha = " INSERT INTO microdados_por_cor_raca (NU_INSCRICAO,NU_ANO,TP_COR_RACA) VALUES("+inscricao+","+ano+",'"+corRaca+"');"
+        queryTabelaFilha = " INSERT INTO microdados_por_cor_raca (id,NU_ANO,TP_COR_RACA) VALUES("+str(idCassandra)+","+ano+",'"+corRaca+"');"
         clienteCassandra.execute(queryTabelaFilha)
-        queryTabelaFilha = " INSERT INTO microdados_por_nacionalidade (NU_INSCRICAO,NU_ANO,TP_NACIONALIDADE) VALUES("+inscricao+","+ano+",'"+nacionalidade+"');"
-        clienteCassandra.execute(queryTabelaFilha)
-
 
     queryValores = queryValores+");"
     queryCampos =queryCampos+")"
