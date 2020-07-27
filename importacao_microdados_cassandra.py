@@ -14,7 +14,9 @@ dicIdAtributo = {"TP_COR_RACA_0":"Nao declarado", "TP_COR_RACA_1":"Branca", "TP_
 
 converterInt = {"Q005":1}
 
-
+indexes = ["SG_UF_RESIDENCIA", "NU_IDADE", "TP_PRESENCA_CN",
+           "TP_PRESENCA_CH", "TP_PRESENCA_LC", "TP_PRESENCA_MT", "TX_RESPOSTAS_LC","TP_LINGUA","TX_GABARITO_LC",
+           "IN_DEFICIENCIA_FISICA", "IN_DEFICIENCIA_MENTAL","TP_COR_RACA", "Q005"]
 
 
 
@@ -52,12 +54,8 @@ def inserirCassandra (linha, coluna):
     global criouTabelaCassandra
     if criouTabelaCassandra == False :
         clienteCassandra.execute("DROP table if exists microdados;")
-        clienteCassandra.execute("DROP table if exists microdados_por_cor_raca;")
         
-        queryCriacaoTabela = "CREATE TABLE microdados_por_cor_raca (id BIGINT,TP_COR_RACA VARCHAR, NU_ANO INT, PRIMARY KEY(id,TP_COR_RACA, NU_ANO));"  
-        clienteCassandra.execute(queryCriacaoTabela)
-
-
+    
         queryCriacaoTabela = "create table microdados ("
         queryCriacaoTabela = queryCriacaoTabela + " id BIGINT, "
         for i in range(len(colunasParaCassandra)):
@@ -81,6 +79,11 @@ def inserirCassandra (linha, coluna):
          "USING 'org.apache.cassandra.index.sasi.SASIIndex' WITH OPTIONS = "+
          "{'mode': 'CONTAINS', 'analyzer_class': 'org.apache.cassandra.index.sasi.analyzer.StandardAnalyzer',"+
          " 'case_sensitive': 'false'};")
+
+        for i in range(len(indexes)):
+            clienteCassandra.execute("CREATE INDEX idx_"+indexes[i]+" ON tcc.microdados("+indexes+");")
+
+
 
             
     queryInsercao = " INSERT INTO microdados "
@@ -108,14 +111,7 @@ def inserirCassandra (linha, coluna):
 
      
        
-        i = coluna.index("NU_ANO")
-        ano = linha[i]
-        i = coluna.index("TP_COR_RACA")
-        corRaca = resolverIdAtributo(coluna[i],linha[i])
-
-        queryTabelaFilha = " INSERT INTO microdados_por_cor_raca (id,NU_ANO,TP_COR_RACA) VALUES("+str(idCassandra)+","+ano+",'"+corRaca+"');"
-        clienteCassandra.execute(queryTabelaFilha)
-
+      
     queryValores = queryValores+");"
     queryCampos =queryCampos+")"
     queryValores = queryValores.replace(",)", ")")

@@ -9,20 +9,21 @@ import redis
 
 def iniciarClienteRedis():
     r = redis.Redis()
+    r.flushdb()
     return r
 
 def ordenarRegistros(resultados,campo):
     
-    dicionario = {}
+    lista = []
 
     for resultado in resultados:
         if resultados[resultado][campo] != 'null':
-           dicionario[resultado] = resultados[resultado][campo];
+           lista.append(resultados[resultado][campo]);
+    
 
-    resultadosOrdenados =sorted(dicionario.items(), key=lambda x:x[1], reverse=True)
-    resultadosOrdenados = resultadosOrdenados[0:5]
+    resultadosOrdenados = sorted(lista, reverse=True)
 
-    return resultadosOrdenados[0:5]
+    return resultadosOrdenados
    
 def ordenarAgrupamento(resultados):
     resultadosOrdenados =sorted(resultados.items(), key=lambda x:x[1], reverse=True)
@@ -119,7 +120,7 @@ def mergeResultados(resultado, dictsParaMerge):
     return resultado
 
 def Q1S():
-   return retornarChaves('*',1)
+   return retornarChaves('*',0)
 
 def Q2S():
     minorias = ['Preta', 'Indigena', 'Amarela', 'Parda']
@@ -141,17 +142,17 @@ def Q4S():
 def Q1M():
     resultados = retornarChaves("*NU_ANO:2019*",0)
     resultadosOrdenados = ordenarRegistros(resultados,"NU_NOTA_REDACAO")
-    return resultadosOrdenados
+    return resultadosOrdenados[0:5]
 
 def Q2M():
     resultados = Q2S()
     resultadosOrdenados = ordenarRegistros(resultados,"NU_NOTA_REDACAO")
-    return resultadosOrdenados
+    return resultadosOrdenados[0:5]
 
 def Q3M():
     resultados = retornarChaves("*NU_IDADE:[1][5-8]*",0)
     resultadosOrdenados = ordenarRegistros(resultados,"NU_NOTA_REDACAO")
-    return resultadosOrdenados
+    return resultadosOrdenados[0:5]
 
 def Q4M():
     resultados = retornarChaves("*",0)
@@ -200,12 +201,43 @@ clienteRedis = iniciarClienteRedis()
 
 def main ():
 
-  #
-    resultados = Q4C()
+ 
+    resultados = Q1S()
+    print('\n\n'+str(len(resultados))+' resultado(s) de Q1')
+
+    resultados = Q2S()
+    print('\n\n'+str(len(resultados))+' resultado(s) de Q2')
+
+    resultados = Q3S()
+    print('\n\n'+str(len(resultados))+' resultado(s) de Q3')
+
+    resultados = Q4S()
+    print('\n\n'+str(len(resultados))+' resultado(s) de Q4')
+
+    resultados = Q1M()
     print(resultados)
-  #  for key in resultados:
-  #      print(key)
-    print('\n\n'+str(len(resultados))+' resultado(s)')
+
+    resultados = Q2M()
+    print(resultados)
+
+    resultados = Q3M()
+    print(resultados)
+
+    resultados = Q4M()
+    print(resultados)
+
+    resultados = Q1C()
+    print(resultados)
+
+    resultados = Q2C()
+    print(resultados)
+
+
+    resultados = Q3C()
+    print(resultados)
+
+    resultados = Q4C()
+    print('\n\n'+str(len(resultados))+' resultado(s) de Q4C')
 
 
 

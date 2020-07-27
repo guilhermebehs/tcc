@@ -20,4 +20,4 @@
 - média de redação por raça em um determinado ano ordenado da maior a menor média
 - média de mátemática por ano  onde o nº de pessoas morando com o inscrito está entre 5 e 9 
 - Top 5 estados com mais evasão em todas as provas objetivas em todos os anos da maior a menor contagem
-- Retornar inscritos que ficaram abaixo da média no ano em que realizaram a prova calculando a média na hora 
+- Retornar inscritos que ficaram abaixo da média no ano de 2019 calculando a média na hora 

@@ -45,8 +45,9 @@ def iniciarClienteMongoDB ():
 
 
 def iniciarClienteRedis():
-	r = redis.Redis()
-	return r
+  r = redis.Redis()
+  r.flushdb()
+  return r
 
 def retirarAcentosRedis(text):
 
@@ -131,49 +132,54 @@ def main ():
 
 
     with open('/home/guilhermebehs/Downloads/MICRODADOS_ENEM_2017.csv') as csv_file:
-	    data = csv.reader(csv_file, delimiter=";")
-	    count = 0
-	    for linha in data:
-	        if count == 0:
-	           colunas = linha
+      data = csv.reader(csv_file, delimiter=";")
+      count = 0
+      for linha in data:
+          if count == 0:
+             colunas = linha
 	            
-	        else:
-	           inserirMongoDB(linha, colunas)
-	           inserirRedis(linha, colunas)
+          else:
+             inserirMongoDB(linha, colunas)
+             inserirRedis(linha, colunas)
 
-	        count= count+1
-	        if count > 500 :
-	           break
+          count= count+1
+
+          if count > 500:
+            break
+	 
 
     with open('/home/guilhermebehs/Downloads/MICRODADOS_ENEM_2018.csv') as csv_file:
-	    data = csv.reader(csv_file, delimiter=";")
-	    count = 0
-	    for linha in data:
-	        if count == 0:
-	           colunas = linha
+      data = csv.reader(csv_file, delimiter=";")
+      count = 0
+      for linha in data:
+          if count == 0:
+             colunas = linha
 	            
-	        else:
-	           inserirMongoDB(linha, colunas)
-	           inserirRedis(linha, colunas)
+          else:
+             inserirMongoDB(linha, colunas)
+             inserirRedis(linha, colunas)
 
-	        count= count+1
-	        if count > 500 :
-	           break
+          count= count+1
+
+          if count > 500:
+            break
+
 
     with open('/home/guilhermebehs/Downloads/MICRODADOS_ENEM_2019.csv') as csv_file:
-	    data = csv.reader(csv_file, delimiter=";")
-	    count = 0
-	    for linha in data:
-	        if count == 0:
-	           colunas = linha
+      data = csv.reader(csv_file, delimiter=";")
+      count = 0
+      for linha in data:
+          if count == 0:
+             colunas = linha
 	            
-	        else:
-	           inserirMongoDB(linha, colunas)
-	           inserirRedis(linha, colunas)
+          else:
+             inserirMongoDB(linha, colunas)
+             inserirRedis(linha, colunas)
 
-	        count= count+1
-	        if count > 500 :
-	           break
+          count= count+1
+
+          if count > 500:
+            break
     
 
 if __name__ == '__main__':
