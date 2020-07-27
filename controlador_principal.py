@@ -1,3 +1,6 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
 from controlador_mongodb import ControladorMongoDB
 from controlador_cassandra import ControladorCassandra
 from controlador_redis import ControladorRedis
@@ -5,205 +8,81 @@ from controlador_redis import ControladorRedis
 from memory_profiler import profile
 import time
 
+
+def executar(objeto,nomeFunction):
+    print("\n\n"+nomeFunction+":\n")
+    start = time.time()
+    getattr(objeto, nomeFunction)()
+    end = time.time()
+    tempoExecucao = (end - start) 
+    print("Tempo para execução: "+str(tempoExecucao))
+
+
 def executarMongoDB():
 
      controladorMongoDB = ControladorMongoDB()
 
-     start = time.time()
-     controladorMongoDB.Q1S()
-     end = time.time()
-     Q1STempoExecucao = (end - start) 
+     print("========== Iniciando o teste com o MongoDB ==========\n\n")
 
-     start = time.time()
-     controladorMongoDB.Q2S()
-     end = time.time()
-     Q2STempoExecucao = (end - start) 
-
-     start = time.time()
-     controladorMongoDB.Q3S()
-     end = time.time()
-     Q3STempoExecucao = (end - start) 
-
-     start = time.time()
-     controladorMongoDB.Q4S()
-     end = time.time()
-     Q4STempoExecucao = (end - start) 
-
-     start = time.time()
-     controladorMongoDB.Q1M()
-     end = time.time()
-     Q1MTempoExecucao = (end - start) 
-
-     start = time.time()
-     controladorMongoDB.Q2M()
-     end = time.time()
-     Q2MTempoExecucao = (end - start) 
-
-     start = time.time()
-     controladorMongoDB.Q3M()
-     end = time.time()
-     Q3MTempoExecucao = (end - start) 
-
-     start = time.time()
-     controladorMongoDB.Q4M()
-     end = time.time()
-     Q4MTempoExecucao = (end - start) 
-
-     start = time.time()
-     controladorMongoDB.Q1C()
-     end = time.time()
-     Q1CTempoExecucao = (end - start) 
-
-     start = time.time()
-     controladorMongoDB.Q2C()
-     end = time.time()
-     Q2CTempoExecucao = (end - start) 
-
-     start = time.time()
-     controladorMongoDB.Q3C()
-     end = time.time()
-     Q3CTempoExecucao = (end - start) 
-
-     start = time.time()
-     controladorMongoDB.Q4C()
-     end = time.time()
-     Q4CTempoExecucao = (end - start) 
+     executar(controladorMongoDB,"Q1S")
+     executar(controladorMongoDB,"Q2S")
+     executar(controladorMongoDB,"Q3S")
+     executar(controladorMongoDB,"Q4S")
+     executar(controladorMongoDB,"Q1M")
+     executar(controladorMongoDB,"Q2M")
+     executar(controladorMongoDB,"Q3M")
+     executar(controladorMongoDB,"Q4M")
+     executar(controladorMongoDB,"Q1C")
+     executar(controladorMongoDB,"Q2C")
+     executar(controladorMongoDB,"Q3C")
+     executar(controladorMongoDB,"Q4C")
 
 
 def executarCassandra():
 
      controladorCassandra = ControladorCassandra()
 
-     start = time.time()
-     controladorCassandra.Q1S()
-     end = time.time()
-     Q1STempoExecucao = (end - start) 
+     print("========== Iniciando o teste com o Apache Cassandra ==========\n\n")
 
-     start = time.time()
-     controladorCassandra.Q2S()
-     end = time.time()
-     Q2STempoExecucao = (end - start) 
+     executar(controladorCassandra,"Q1S")
+     executar(controladorCassandra,"Q2S")
+     executar(controladorCassandra,"Q3S")
+     executar(controladorCassandra,"Q4S")
+     executar(controladorCassandra,"Q1M")
+     executar(controladorCassandra,"Q2M")
+     executar(controladorCassandra,"Q3M")
+     executar(controladorCassandra,"Q4M")
+     executar(controladorCassandra,"Q1C")
+     executar(controladorCassandra,"Q2C")
+     executar(controladorCassandra,"Q3C")
+     executar(controladorCassandra,"Q4C")
 
-     start = time.time()
-     controladorCassandra.Q3S()
-     end = time.time()
-     Q3STempoExecucao = (end - start) 
-
-     start = time.time()
-     controladorCassandra.Q4S()
-     end = time.time()
-     Q4STempoExecucao = (end - start) 
-
-     start = time.time()
-     controladorCassandra.Q1M()
-     end = time.time()
-     Q1MTempoExecucao = (end - start) 
-
-     start = time.time()
-     controladorCassandra.Q2M()
-     end = time.time()
-     Q2MTempoExecucao = (end - start) 
-
-     start = time.time()
-     controladorCassandra.Q3M()
-     end = time.time()
-     Q3MTempoExecucao = (end - start) 
-
-     start = time.time()
-     controladorCassandra.Q4M()
-     end = time.time()
-     Q4MTempoExecucao = (end - start) 
-
-     start = time.time()
-     controladorCassandra.Q1C()
-     end = time.time()
-     Q1CTempoExecucao = (end - start) 
-
-     start = time.time()
-     controladorCassandra.Q2C()
-     end = time.time()
-     Q2CTempoExecucao = (end - start) 
-
-     start = time.time()
-     controladorCassandra.Q3C()
-     end = time.time()
-     Q3CTempoExecucao = (end - start) 
-
-     start = time.time()
-     controladorCassandra.Q4C()
-     end = time.time()
-     Q4CTempoExecucao = (end - start) 
-
+    
 
 def executarRedis():
 
      controladorRedis = ControladorRedis()
 
-     start = time.time()
-     controladorRedis.Q1S()
-     end = time.time()
-     Q1STempoExecucao = (end - start) 
+     print("========== Iniciando o teste com o Redis ==========\n\n")
 
-     start = time.time()
-     controladorRedis.Q2S()
-     end = time.time()
-     Q2STempoExecucao = (end - start) 
-
-     start = time.time()
-     controladorRedis.Q3S()
-     end = time.time()
-     Q3STempoExecucao = (end - start) 
-
-     start = time.time()
-     controladorRedis.Q4S()
-     end = time.time()
-     Q4STempoExecucao = (end - start) 
-
-     start = time.time()
-     controladorRedis.Q1M()
-     end = time.time()
-     Q1MTempoExecucao = (end - start) 
-
-     start = time.time()
-     controladorRedis.Q2M()
-     end = time.time()
-     Q2MTempoExecucao = (end - start) 
-
-     start = time.time()
-     controladorRedis.Q3M()
-     end = time.time()
-     Q3MTempoExecucao = (end - start) 
-
-     start = time.time()
-     controladorRedis.Q4M()
-     end = time.time()
-     Q4MTempoExecucao = (end - start) 
-
-     start = time.time()
-     controladorRedis.Q1C()
-     end = time.time()
-     Q1CTempoExecucao = (end - start) 
-
-     start = time.time()
-     controladorRedis.Q2C()
-     end = time.time()
-     Q2CTempoExecucao = (end - start) 
-
-     start = time.time()
-     controladorRedis.Q3C()
-     end = time.time()
-     Q3CTempoExecucao = (end - start) 
-
-     start = time.time()
-     controladorRedis.Q4C()
-     end = time.time()
-     Q4CTempoExecucao = (end - start) 
+     executar(controladorRedis,"Q1S")
+     executar(controladorRedis,"Q2S")
+     executar(controladorRedis,"Q3S")
+     executar(controladorRedis,"Q4S")
+     executar(controladorRedis,"Q1M")
+     executar(controladorRedis,"Q2M")
+     executar(controladorRedis,"Q3M")
+     executar(controladorRedis,"Q4M")
+     executar(controladorRedis,"Q1C")
+     executar(controladorRedis,"Q2C")
+     executar(controladorRedis,"Q3C")
+     executar(controladorRedis,"Q4C")
 
 
 def main():
      #executarMongoDB()
-     #executarCassandra()
-     executarRedis()
+     executarCassandra()
+     #executarRedis()
 
 if __name__ == '__main__':
     main()
