@@ -4,6 +4,7 @@
 
 import redis
 from memory_profiler import profile
+import memory_profiler
 
 
 class ControladorRedis:
@@ -20,7 +21,6 @@ class ControladorRedis:
         return r
    
 
-    @profile
     def ordenarRegistros(self,resultados,campo):
         
         lista = []
@@ -35,13 +35,11 @@ class ControladorRedis:
         return resultadosOrdenados
 
 
-    @profile   
     def ordenarAgrupamento(self,resultados):
         resultadosOrdenados =sorted(resultados.items(), key=lambda x:x[1], reverse=True)
         return resultadosOrdenados
 
 
-    @profile
     def retornarChaves(self,expressaoRegular,limit):
         resultado = {}
         for key in clienteRedis.scan_iter(expressaoRegular):
@@ -52,7 +50,6 @@ class ControladorRedis:
         return resultado
 
 
-    @profile
     def mediaRedacaoAgrupadaPorRaca(self,resultados):
         agrupamentos ={}
         medias = {}
@@ -73,7 +70,6 @@ class ControladorRedis:
         return medias
 
     
-    @profile
     def mediaMatematicaAgrupadaPorAno(self,resultados):
         agrupamentos ={}
         medias = {}
@@ -94,7 +90,6 @@ class ControladorRedis:
         return medias
 
 
-    @profile
     def contagemEvasaoGeralAgrupadaPorUf(self,resultados):
         agrupamentos ={}
         contagens = {}
@@ -113,7 +108,6 @@ class ControladorRedis:
         return contagens
      
 
-    @profile       
     def mediaRedacaoAgrupadaPorAno(self,resultados):
         agrupamentos ={}
         contagemMedias = {}
@@ -135,7 +129,6 @@ class ControladorRedis:
         return contagemMedias
     
 
-    @profile
     def mergeResultados(self,resultado, dictsParaMerge):
         for dic in dictsParaMerge:
             resultado.update(dic)
@@ -155,7 +148,7 @@ class ControladorRedis:
         for minoria in minorias:
             retorno = self.retornarChaves("*TP_COR_RACA:"+minoria+"*",0)
             resultados.update(retorno)
-
+        
         return resultados
 
 
@@ -173,6 +166,8 @@ class ControladorRedis:
     def Q1M(self):
         resultados = self.retornarChaves("*NU_ANO:2019*",0)
         resultadosOrdenados = self.ordenarRegistros(resultados,"NU_NOTA_REDACAO")
+        print(memory_profiler.memory_usage(-1))
+
         return resultadosOrdenados[0:5]
 
 

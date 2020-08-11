@@ -1,23 +1,23 @@
-* Simples 
+Q1S: Busca simples que deve retornar todos os inscritos;
 
-- Retornar inscritos
-- Retornar inscritos pertencentes a minorias raciais (busca por inscritos que não se declararam brancos ou  não-declarados) 
-- Retornar inscritos que indicaram ter dificiência física ou mental
-- Retornar inscritos com nacionalidade brasileira
+Q2S: Busca simples que deve retornar todos os inscritos pertencentes a minorias racias, ou seja, sua etnia/raça não deve ser ser branca ou não declara;
 
+Q3S:Busca simples que deve retornar todos os inscritos que possuem deficiência física ou mental;
 
-* Média
+Q4S: Busca simples que deve retornar todos os inscritos com nacionalidade brasileira;
 
-- Top 5 notas de redação em um determinado ano 
-- Top 5 notas de redação de inscritos pertencentes de minorias raciais em um determinado ano
-- Top 5 notas de redação de inscritos entre 15 e 18 anos (intervalo padrão em que um inscrito normalmente está no ensino médio)   
-- Contagem de inscritos que gabaritaram a prova de lingua estrangeira 
+Q1M: Busca mediana que deve retornar as 5 maiores notas de redação de 2019 em ordem decrescente;
 
+Q2M: Busca mediana que deve retornar as 5 maiores notas de redação de 2019 em ordem decrescente onde o inscrito pertence a uma minoria racial;
 
+Q3M: Busca mediana que deve retornar as 5 maiores notas de redação de 2019 em ordem decrescente onde a idade do inscrito está em um intervalo entre 15 e 18 anos;
 
-* Complexa
+Q4M: Busca mediana que deve retornar a contagem de inscritos que gabaritaram a prova de língua portuguesa em 2017;
 
-- média de redação por raça em um determinado ano ordenado da maior a menor média
-- média de mátemática por ano  onde o nº de pessoas morando com o inscrito está entre 5 e 9 
-- Top 5 estados com mais evasão em todas as provas objetivas em todos os anos da maior a menor contagem
-- Retornar inscritos que ficaram abaixo da média no ano de 2019 calculando a média na hora 
+Q1C: Busca complexa que deve retornar a média de redações de 2017 por raça/etniaem ordem decrescente;
+
+Q2C: Busca complexa que deve retornar a média de matemática por ano onde o número de pessoas morando com o inscrito está em um intervalo entre 5 e 9;
+
+Q3C: Busca complexa que deve retornar os 5 estados com mais evasão em todas as provas em objetivas em ordem decrescente;
+
+Q4C: Busca complexa que deve retornar os inscritos que ficaram abaixo da média de redação em 2018, sendo que a média deve ser calculada no momento da busca;

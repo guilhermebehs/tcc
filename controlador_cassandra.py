@@ -1,5 +1,6 @@
 from cassandra.cluster import Cluster 
 from memory_profiler import profile
+import memory_profiler
 
 
 class ControladorCassandra:
@@ -9,7 +10,7 @@ class ControladorCassandra:
        global clienteCassandra
        clienteCassandra = self.iniciarClienteCassandra() 
 
-    @profile
+
     def iniciarClienteCassandra(self):
 	    clstr=Cluster()
 	    sessao=clstr.connect("tcc")
@@ -24,7 +25,7 @@ class ControladorCassandra:
     @profile
     def Q1S(self):
 	   query = "SELECT * FROM microdados;"
-	   return list(clienteCassandra.execute(query))
+	   return clienteCassandra.execute(query)
 
 
     @profile
@@ -39,7 +40,7 @@ class ControladorCassandra:
 	   inscricoesIndigena = list(clienteCassandra.execute(query))	
 	   inscricoes = tuple(inscricoesPreta) + tuple(inscricoesIndigena) + tuple(inscricoesParda) + tuple(inscricoesAmarela)
 	   
-	   return list(inscricoes)
+	   return inscricoes
 
 
     @profile
@@ -56,7 +57,7 @@ class ControladorCassandra:
     @profile
     def Q4S(self):
 	    query = "SELECT * FROM microdados WHERE TP_NACIONALIDADE LIKE '*Brasileiro*' ALLOW FILTERING ;"
-	    inscricoes = list(clienteCassandra.execute(query))
+	    inscricoes = clienteCassandra.execute(query)
 	    return inscricoes
 
 

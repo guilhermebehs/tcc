@@ -4,18 +4,19 @@
 from controlador_mongodb import ControladorMongoDB
 from controlador_cassandra import ControladorCassandra
 from controlador_redis import ControladorRedis
-
-from memory_profiler import profile
 import time
 
 
 def executar(objeto,nomeFunction):
+    tempoExecucao = 0 
     print("\n\n"+nomeFunction+":\n")
-    start = time.time()
-    getattr(objeto, nomeFunction)()
-    end = time.time()
-    tempoExecucao = (end - start) 
-    print("Tempo para execução: "+str(tempoExecucao))
+
+    for i in range(10):
+         start = time.time()
+         getattr(objeto, nomeFunction)()
+         end = time.time()
+         tempoExecucao = tempoExecucao + (end - start) 
+    print("Tempo médio de execução: "+str(tempoExecucao/10))
 
 
 def executarMongoDB():
@@ -80,9 +81,9 @@ def executarRedis():
 
 
 def main():
-     #executarMongoDB()
+     executarMongoDB()
      executarCassandra()
-     #executarRedis()
+     executarRedis()
 
 if __name__ == '__main__':
     main()
