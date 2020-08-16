@@ -14,9 +14,25 @@ dicIdAtributo = {"TP_COR_RACA_0":"Nao declarado", "TP_COR_RACA_1":"Branca", "TP_
 
 converterInt = {"Q005":1}
 
-indexes = ["SG_UF_RESIDENCIA", "NU_IDADE", "TP_PRESENCA_CN",
-           "TP_PRESENCA_CH", "TP_PRESENCA_LC", "TP_PRESENCA_MT", "TX_RESPOSTAS_LC","TP_LINGUA","TX_GABARITO_LC",
-           "IN_DEFICIENCIA_FISICA", "IN_DEFICIENCIA_MENTAL","TP_COR_RACA", "Q005"]
+indexes = [
+           "NU_ANO",
+           "SG_UF_RESIDENCIA", 
+           "NU_IDADE", 
+           "TP_NACIONALIDADE", 
+           "TP_PRESENCA_CN",
+           "TP_PRESENCA_CH", 
+           "TP_PRESENCA_LC", 
+           "TP_PRESENCA_MT", 
+           "TX_RESPOSTAS_LC",
+           "TP_LINGUA",
+           "TX_GABARITO_LC",
+           "IN_DEFICIENCIA_FISICA", 
+           "IN_DEFICIENCIA_MENTAL", 
+           "NU_NOTA_REDACAO",
+           "NU_NOTA_MT", 
+           "TP_COR_RACA", 
+           "Q005"
+           ]
 
 
 
