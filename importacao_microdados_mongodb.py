@@ -36,7 +36,7 @@ indexes = [
            ]
 
 
-
+arrayInsert =[]
 
 
 def resolverIdAtributo(coluna, valor):
@@ -62,6 +62,8 @@ def inserirMongoDB (linha, coluna):
 
     documento = {}
 
+    global arrayInsert
+
     for i in range(len(linha)):
         if linha[i].strip() == '':
             documento[coluna[i]] = None
@@ -76,18 +78,24 @@ def inserirMongoDB (linha, coluna):
                    documento[coluna[i]] = float(documento[coluna[i]])
             if coluna[i] in converterInt:
                 documento[coluna[i]] = int(documento[coluna[i]]) 
-
-    clienteMongo.insert_one(documento)
+    
+    arrayInsert.append(documento)
+    
+    if len(arrayInsert) == 100000:
+       clienteMongo.insert_many(arrayInsert)
+       arrayInsert = []
 
 
 
 def main ():
 
     global clienteMongo
+    global arrayInsert
+
     clienteMongo = iniciarClienteMongoDB()
 
 
-    with open('/home/guilhermebehs/Downloads/Microdados Enem 2017/DADOS/MICRODADOS_ENEM_2017.csv') as csv_file:
+    with open('/home/guilhermebehs/Downloads/MICRODADOS_ENEM_2017.csv') as csv_file:
       data = csv.reader(csv_file, delimiter=";")
       count = 0
       for linha in data:
@@ -100,7 +108,7 @@ def main ():
           count= count+1
 	 
 
-    with open('/home/guilhermebehs/Downloads/microdados_enem2018/DADOS/MICRODADOS_ENEM_2018.csv') as csv_file:
+    with open('/home/guilhermebehs/Downloads/MICRODADOS_ENEM_2018.csv') as csv_file:
       data = csv.reader(csv_file, delimiter=";")
       count = 0
       for linha in data:
@@ -112,7 +120,9 @@ def main ():
 
           count= count+1
 
-    with open('/home/guilhermebehs/Downloads/microdados_enem_2019/DADOS/MICRODADOS_ENEM_2019.csv') as csv_file:
+
+
+    with open('/home/guilhermebehs/Downloads/MICRODADOS_ENEM_2019.csv') as csv_file:
       data = csv.reader(csv_file, delimiter=";")
       count = 0
       for linha in data:
@@ -123,6 +133,10 @@ def main ():
              inserirMongoDB(linha, colunas)
 
           count= count+1
+          
+
+    if len(arrayInsert) > 0:
+    	clienteMongo.insert_many(arrayInsert)
 
 
 if __name__ == '__main__':
